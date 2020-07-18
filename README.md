@@ -2,11 +2,51 @@
 
 The files in this repository were used to configure the network depicted below.
 
-![TODO: Update the path with the name of your diagram](Images/diagram_filename.png)
+![TODO: Update the path with the name of your diagram] ![Newtwork Diagram](Images/networkdg.png)
 
-These files have been tested and used to generate a live ELK deployment on Azure. They can be used to either recreate the entire deployment pictured above. Alternatively, select portions of the _____ file may be used to install only certain pieces of it, such as Filebeat.
+These files have been tested and used to generate a live ELK deployment on Azure. They can be used to either recreate the entire deployment pictured above. Alternatively, select portions of the network diagram file may be used to install only certain pieces of it, such as Filebeat.
 
-  - _TODO: Enter the playbook file._
+```
+ ---
+- name: Configure Elkstack
+  hosts: Elk
+  remote_user: RedTeamAdmin
+  become: true
+  tasks:
+    - name: docker.io
+      apt:
+        update_cache: yes
+        name: docker.io
+        state: present
+    - name: Install pip
+      apt:
+        name: python-pip
+        state: present
+    - name: Install Docker python module
+      pip:
+        name: docker
+        state: present
+    - name: Use more memory
+      sysctl:
+        name: vm.max_map_count
+        value: '262144'
+        state: present
+        reload: yes
+    - name: download and launch elk container
+      docker_container:
+        name: elk
+        image: sebp/elk:740
+        state: started
+        restart_policy: always
+        published_ports:
+        - 5601:5601
+        - 9200:9200
+        - 5044:5044
+    - name: Enable docker service
+      systemd:
+        name: docker
+        enabled: yes
+```
 
 This document contains the following details:
 - Description of the Topologu
@@ -15,7 +55,6 @@ This document contains the following details:
   - Beats in Use
   - Machines Being Monitored
 - How to Use the Ansible Build
-
 
 ### Description of the Topology
 
@@ -37,8 +76,6 @@ _Note: Use the [Markdown Table Generator](http://www.tablesgenerator.com/markdow
 | TODO     |          |            |                  |
 | TODO     |          |            |                  |
 | TODO     |          |            |                  |
-
-![Newtwork Diagram](Images/networkdg.png)
 
 ### Access Policies
 
