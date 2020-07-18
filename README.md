@@ -38,6 +38,8 @@ _Note: Use the [Markdown Table Generator](http://www.tablesgenerator.com/markdow
 | TODO     |          |            |                  |
 | TODO     |          |            |                  |
 
+![Newtwork Diagram](Images/networkdg.png)
+
 ### Access Policies
 
 The machines on the internal network are not exposed to the public Internet. 
